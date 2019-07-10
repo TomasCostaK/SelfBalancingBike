@@ -1,25 +1,14 @@
-#include <Kalman.h>
-#include <ctime>    
-#include<Wire.h>
+#include "KalmanFilter.h"
 
-class KalmanFilter{
-Kalman kalmanX; // Create the Kalman instances
-Kalman kalmanY;
+using namespace N;
 
-double gyroXangle, gyroYangle; // Angle calculate using the gyro only
-double compAngleX, compAngleY; // Calculated angle using a complementary filter
-double kalAngleX, kalAngleY; // Calculated angle using a Kalman filter
-
-char tmp_str[7];
-};
-
-char* convert_int16_to_str(int16_t i) { // converts int16 to string. Moreover, resulting strings will have the same length in the debug monitor.
-  char* tmp_str=null;
+char* KalmanFilter::convert_int16_to_str(int16_t i) { // converts int16 to string. Moreover, resulting strings will have the same length in the debug monitor.
+  char* tmp_str;
   sprintf(tmp_str, "%6d", i);
   return tmp_str;
 }
 
-float update(int16_t accX , int16_t accY , int16_t accZ,int16_t gyroX,int16_t gyroY,int16_t gyroZ, float dt){
+float KalmanFilter::update(int16_t accX , int16_t accY , int16_t accZ,int16_t gyroX,int16_t gyroY,int16_t gyroZ, double dt){
   //double dt = (double)(micros() - timer) / 1000000; // Calculate delta time
 
   
@@ -76,5 +65,5 @@ float update(int16_t accX , int16_t accY , int16_t accZ,int16_t gyroX,int16_t gy
       if (gyroYangle < -180 || gyroYangle > 180)
     gyroYangle = kalAngleY;
     
-    return kalAngleX
+    return kalAngleX;
 }
