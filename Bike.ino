@@ -47,8 +47,6 @@ void setup() {
   Wire.endTransmission(true);
   control.attach(servoPin);
 
-  timer = micros();
-
   //Define pid values
   mypid.SetMode(AUTOMATIC);
   mypid.SetSampleTime(10);
@@ -58,7 +56,8 @@ void setup() {
 void loop() {
 
   //Teste para PID
-
+  loop_time = micros();
+  
   digitalWrite(LED_BUILTIN, LOW);   // turn the LED on (HIGH is the voltage level)
   Wire.beginTransmission(MPU_ADDR);
   Wire.write(0x3B); // starting with register 0x3B (ACCEL_XOUT_H) [MPU-6000 and MPU-6050 Register Map and Descriptions Revision 4.2, p.40]
@@ -83,7 +82,7 @@ void loop() {
     Serial.println("Titlting right");
   }
 
-  double dt = (double)(micros() - timer) / 1000000; // Calculate delta time
+  double dt = (double)(micros() - loop_time) / 1000000; // Calculate delta time
   input = filter.update(acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z, dt);
 
 //  while(!mypid.Compute()){
